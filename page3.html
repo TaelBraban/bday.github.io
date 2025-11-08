@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="flavicon.png">
     <title></title>
     <style>
         body {
@@ -102,36 +103,19 @@
             position: relative;
             pointer-events: auto;
             z-index: 1001;
-            width: 60px;
-            height: 50px;
         }
-        .small-circle {
-            width: 15px;
-            height: 15px;
-            background-color: transparent;
-            border-radius: 50%;
-            position: absolute;
-            border: 2px solid black;
+        .oval-chain-small {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .small-oval {
             cursor: pointer;
             pointer-events: auto;
             transition: background-color 0.3s;
-            z-index: 1001;
-            filter: drop-shadow(0 0 5px white) drop-shadow(0 0 10px white);
         }
-        .small-circle.filled {
-            background-color: black;
-        }
-        .circle1 {
-            top: 0;
-            left: 20px;
-        }
-        .circle2 {
-            top: 25px;
-            left: 0;
-        }
-        .circle3 {
-            top: 25px;
-            left: 40px;
+        .small-oval.filled {
+            background-color: black !important;
         }
         .tooltip-container {
             position: relative;
@@ -139,11 +123,12 @@
             align-items: center;
         }
         .arrow {
-            margin: 0 20px;
             font-size: 24px;
             opacity: 0;
             transition: opacity 0.3s;
             text-shadow: 0 0 10px white, 0 0 20px white;
+            position: absolute;
+            left: calc(100% + 20px);
         }
         .text-box {
             border: 1px solid rgb(122, 197, 76);
@@ -153,6 +138,8 @@
             transition: opacity 0.3s;
             width: 150px;
             box-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
+            position: absolute;
+            left: calc(100% + 60px);
         }
         .image-container:hover ~ .arrow,
         .image-container:hover ~ .text-box,
@@ -274,6 +261,98 @@
             background-color: rgb(122, 197, 76);
             color: white;
         }
+        .image-with-scale {
+            position: relative;
+        }
+        .oval {
+            width: 12px;
+            height: 18px;
+            border: 1.5px solid black;
+            border-radius: 50%;
+            background-color: white;
+            box-shadow: 0 0 10px white, 0 0 20px white;
+            opacity: 1 !important;
+        }
+        .connecting-line {
+            width: 1.5px;
+            height: 10px;
+            background-color: black;
+            box-shadow: 0 0 5px white;
+            opacity: 1 !important;
+        }
+        .cross-square-wrapper {
+            position: absolute;
+            top: 160px;
+            left: -100px;
+            display: flex;
+            align-items: center;
+            z-index: 10000;
+        }
+        .cross-square {
+            width: 80px;
+            height: 80px;
+            display: grid;
+            grid-template-columns: 1fr 6px 1fr;
+            grid-template-rows: 1fr 6px 1fr;
+            gap: 0;
+            box-shadow: 0 0 10px white, 0 0 20px white;
+        }
+        .cross-text-box {
+            border: 1px solid rgb(122, 197, 76);
+            padding: 15px;
+            background-color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            width: 150px;
+            box-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
+            position: absolute;
+            right: calc(100% + 40px);
+        }
+        .cross-arrow {
+            position: absolute;
+            right: calc(100% + 20px);
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-shadow: 0 0 10px white, 0 0 20px white;
+        }
+        .cross-square-wrapper:hover .cross-arrow,
+        .cross-square-wrapper:hover .cross-text-box {
+            opacity: 1;
+        }
+        .cross-square-section {
+            background-color: black;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: filter 0.3s;
+        }
+        .cross-square-section.faded {
+            filter: brightness(2) contrast(0.5);
+        }
+        .cross-square-section iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            transform: translate(-50%, -50%);
+            border: none;
+            pointer-events: none;
+        }
+        .cross-square-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: auto;
+        }
+        .cross-square-gap {
+            background-color: transparent;
+        }
 
         /* quéries pour téléphone */
         @media (max-width: 768px) {
@@ -387,9 +466,38 @@
                 </div>
                 <div class="circle-arrow">→</div>
                 <div class="circle-triangle">
-                    <div class="small-circle circle1"></div>
-                    <div class="small-circle circle2"></div>
-                    <div class="small-circle circle3"></div>
+                    <div class="oval-chain-small">
+                        <div class="oval small-oval"></div>
+                        <div class="connecting-line"></div>
+                        <div class="oval small-oval"></div>
+                        <div class="connecting-line"></div>
+                        <div class="oval small-oval"></div>
+                    </div>
+                </div>
+                <div class="cross-square-wrapper">
+                    <div class="cross-text-box">
+                        Ben's escaping position
+                    </div>
+                    <div class="cross-arrow">→</div>
+                    <div class="cross-square">
+                        <div class="cross-square-section">
+                            <iframe src="https://www.youtube.com/embed/F0GOOP82094?autoplay=1&mute=1&controls=0&loop=1&playlist=F0GOOP82094" allow="autoplay; encrypted-media"></iframe>
+                        </div>
+                        <div class="cross-square-gap"></div>
+                        <div class="cross-square-section">
+                            <iframe src="https://www.youtube.com/embed/ME0dPuBtzug?autoplay=1&mute=1&controls=0&loop=1&playlist=ME0dPuBtzug" allow="autoplay; encrypted-media"></iframe>
+                        </div>
+                        <div class="cross-square-gap"></div>
+                        <div class="cross-square-gap"></div>
+                        <div class="cross-square-gap"></div>
+                        <div class="cross-square-section">
+                            <iframe src="https://www.youtube.com/embed/VnsRQvfv_g4?autoplay=1&mute=1&controls=0&loop=1&playlist=VnsRQvfv_g4" allow="autoplay; encrypted-media"></iframe>
+                        </div>
+                        <div class="cross-square-gap"></div>
+                        <div class="cross-square-section">
+                            <iframe src="https://www.youtube.com/embed/yv2RtoIMNzA?autoplay=1&mute=1&controls=0&loop=1&playlist=yv2RtoIMNzA" allow="autoplay; encrypted-media"></iframe>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="image-container" onclick="addQuarter(event)">
@@ -453,12 +561,23 @@
                     console.log('Shoe rotated to', shoeRotation, 'degrees');
                 });
             }
-            console.log('Page loaded, looking for circles...');
-            const circles = document.querySelectorAll('.small-circle');
-            console.log('Found circles:', circles.length);
+            
+            // Initialiser les clics sur les sections vidéo
+            const videoSections = document.querySelectorAll('.cross-square-section');
+            videoSections.forEach((section, index) => {
+                section.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    this.classList.toggle('faded');
+                    console.log('Video section', index + 1, 'toggled. Faded:', this.classList.contains('faded'));
+                });
+            });
+            
+            console.log('Page loaded, looking for ovals...');
+            const circles = document.querySelectorAll('.small-oval');
+            console.log('Found ovals:', circles.length);
             
             if (circles.length === 0) {
-                console.error('No circles found!');
+                console.error('No ovals found!');
                 return;
             }
             
@@ -559,11 +678,24 @@
             
             // ça devrait faire afficher 
     
-            const textBoxes = document.querySelectorAll('.text-box, .text-box2, .circle-text-box, .shoe-text-box');
-            const arrows = document.querySelectorAll('.arrow, .arrow2, .circle-arrow, .shoe-arrow');
+            const textBoxes = document.querySelectorAll('.text-box, .text-box2, .circle-text-box, .shoe-text-box, .cross-text-box');
+            const arrows = document.querySelectorAll('.arrow, .arrow2, .circle-arrow, .shoe-arrow, .cross-arrow');
+            const videoSections = document.querySelectorAll('.cross-square-section');
             
             textBoxes.forEach(box => box.style.opacity = '1');
             arrows.forEach(arrow => arrow.style.opacity = '1');
+            
+            // Cache temporairement les vidéos et met un fond de couleur ou gradient
+            videoSections.forEach(section => {
+                const iframe = section.querySelector('iframe');
+                if (iframe) iframe.style.display = 'none';
+                // Applique une couleur de fond alternative pour la capture
+                if (!section.classList.contains('faded')) {
+                    section.style.backgroundColor = '#1a1a1a'; // gris foncé au lieu de noir pur
+                } else {
+                    section.style.backgroundColor = '#d0d0d0'; // gris clair pour les sections fadées
+                }
+            });
             
             // pour attendre un peu que les changements soient appliqués
             setTimeout(() => {
@@ -582,6 +714,13 @@
                     button.style.display = 'block';
                     textBoxes.forEach(box => box.style.opacity = '0');
                     arrows.forEach(arrow => arrow.style.opacity = '0');
+                    
+                    // Réaffiche les vidéos et remet le fond noir
+                    videoSections.forEach(section => {
+                        const iframe = section.querySelector('iframe');
+                        if (iframe) iframe.style.display = 'block';
+                        section.style.backgroundColor = 'black';
+                    });
                 });
             }, 100);
         }
