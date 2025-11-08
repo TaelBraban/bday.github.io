@@ -26,6 +26,26 @@
             display: block;
             text-decoration: none;
         }
+        
+        /* Media queries pour mobile */
+        @media (max-width: 768px) {
+            body {
+                background-size: cover;
+            }
+            
+            .cercle-bleu {
+                width: 60px;
+                height: 60px;
+                top: 10px;
+                right: 10px;
+            }
+            
+            body > a > img {
+                width: 100vw;
+                height: 100vh;
+                object-fit: cover;
+            }
+        }
     </style>
 </head>
 <body>
