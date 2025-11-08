@@ -31,7 +31,7 @@
             margin-top: 0;
             margin-bottom: 40px;
             align-self: flex-start;
-            padding-left: calc((100vw - 300px) / 2);
+            padding-left: calc((100vw - 300px) / 2 - 85px);
             text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
         }
         .content-wrapper {
@@ -50,6 +50,45 @@
             height: auto;
             display: block;
             filter: drop-shadow(0 0 10px white) drop-shadow(0 0 20px white);
+        }
+        .shoe-wrapper {
+            position: absolute;
+            top: -100px;
+            right: -90px;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+        }
+        .shoe-image {
+            width: 60px;
+            height: auto;
+            filter: drop-shadow(0 0 10px white) drop-shadow(0 0 20px white);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .shoe-text-box {
+            border: 1px solid rgb(122, 197, 76);
+            padding: 15px;
+            background-color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            width: 150px;
+            position: absolute;
+            left: calc(100% + 40px);
+            box-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
+            white-space: nowrap;
+        }
+        .shoe-arrow {
+            position: absolute;
+            left: calc(100% + 20px);
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-shadow: 0 0 10px white, 0 0 20px white;
+        }
+        .shoe-wrapper:hover .shoe-arrow,
+        .shoe-wrapper:hover .shoe-text-box {
+            opacity: 1;
         }
         .overlay {
             position: absolute;
@@ -151,7 +190,7 @@
         .circle-triangle-wrapper:hover .circle-arrow,
         .circle-triangle-wrapper:hover .circle-text-box {
             opacity: 1;
-        }
+        } /* aah voilà c là les quarts qui s'embrument */
         .image-with-scale {
             display: flex;
             flex-direction: column;
@@ -235,8 +274,8 @@
             background-color: rgb(122, 197, 76);
             color: white;
         }
-        
-        /* Media queries pour mobile */
+
+        /* quéries pour téléphone */
         @media (max-width: 768px) {
             body {
                 padding-top: 10px;
@@ -355,8 +394,15 @@
             </div>
             <div class="image-container" onclick="addQuarter(event)">
                 <img src="ben.png" alt="Ben" id="benImage">
+                <div class="shoe-wrapper">
+                    <div class="shoe-text-box">
+                        Ben's direction degrees
+                    </div>
+                    <div class="shoe-arrow">→</div>
+                    <img src="shoe1.png" alt="Shoe" class="shoe-image">
+                </div>
                 <svg class="overlay" id="overlay" viewBox="0 0 100 100">
-                    <!-- Les quarts seront ajoutés ici -->
+                    <!-- ça c pour le camembert?? jecrois -->
                 </svg>
             </div>
             <div class="number-scale-container">
@@ -393,9 +439,20 @@
     <script>
         let clickCount = 0;
         let selectedNumber = null;
+        let shoeRotation = 0;
         
-        // Initialiser les cercles après le chargement de la page
+         
         window.addEventListener('load', function() {
+            // Initialiser la rotation de la chaussure
+            const shoeImage = document.querySelector('.shoe-image');
+            if (shoeImage) {
+                shoeImage.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    shoeRotation += 20;
+                    this.style.transform = `rotate(${shoeRotation}deg)`;
+                    console.log('Shoe rotated to', shoeRotation, 'degrees');
+                });
+            }
             console.log('Page loaded, looking for circles...');
             const circles = document.querySelectorAll('.small-circle');
             console.log('Found circles:', circles.length);
@@ -419,7 +476,7 @@
                     console.log('Circle', index + 1, 'toggled. Filled:', this.classList.contains('filled'));
                 });
                 
-                // Test si mousedown fonctionne
+                
                 circle.addEventListener('mousedown', function(e) {
                     console.log('MOUSEDOWN on circle', index + 1);
                 });
@@ -440,14 +497,14 @@
         
         function selectNumber(num, evt) {
             if (evt) {
-                evt.stopPropagation(); // Empêcher la propagation du clic
+                evt.stopPropagation(); // ça devrait enfin!! empêcher la propagation du clic
             }
             
-            // Retirer la sélection précédente
+            // enlève la sélection précédente
             const allNumbers = document.querySelectorAll('.number-item');
             allNumbers.forEach(item => item.classList.remove('selected'));
             
-            // Ajouter la sélection au numéro cliqué
+            // sélection au numéro cliqué
             if (evt && evt.target) {
                 evt.target.classList.add('selected');
             }
@@ -462,7 +519,7 @@
             const overlay = document.getElementById('overlay');
             
             if (clickCount >= 4) {
-                // Réinitialiser l'image
+                // pour remettre l'image
                 clickCount = 0;
                 overlay.innerHTML = '';
                 return;
@@ -472,7 +529,7 @@
             const startAngle = (clickCount - 1) * 90;
             const endAngle = clickCount * 90;
             
-            // Créer un quart de cercle
+            //  le fameux camembert de quart de cercle
             const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
             const centerX = 50;
             const centerY = 50;
@@ -498,29 +555,30 @@
         
         function takeScreenshot() {
             const button = document.querySelector('.screenshot-btn');
-            button.style.display = 'none'; // Cacher le bouton pour la capture
+            button.style.display = 'none'; // askip cache le bouton pdt la capture d'écran
             
-            // Afficher tous les text-boxes et flèches
+            // ça devrait faire afficher 
+    
             const textBoxes = document.querySelectorAll('.text-box, .text-box2, .circle-text-box');
             const arrows = document.querySelectorAll('.arrow, .arrow2, .circle-arrow');
             
             textBoxes.forEach(box => box.style.opacity = '1');
             arrows.forEach(arrow => arrow.style.opacity = '1');
             
-            // Attendre un peu pour que les changements soient appliqués
+            // pour attendre un peu que les changements soient appliqués
             setTimeout(() => {
                 html2canvas(document.body, {
                     backgroundColor: null,
                     scale: 2,
                     logging: false
                 }).then(canvas => {
-                    // Créer un lien de téléchargement
+                    // pour creer un lien à téléchargeeer
                     const link = document.createElement('a');
                     link.download = 'ben-weather-' + Date.now() + '.png';
                     link.href = canvas.toDataURL();
                     link.click();
-                    
-                    // Réafficher le bouton et remettre les opacités à 0
+
+                    // ça c pour réafficher le bouton et remettre les opacités à 0
                     button.style.display = 'block';
                     textBoxes.forEach(box => box.style.opacity = '0');
                     arrows.forEach(arrow => arrow.style.opacity = '0');
