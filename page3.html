@@ -17,16 +17,22 @@
             color: rgb(122, 197, 76);
             font-size: 14px;
             padding-top: 20px;
+            background-image: url('fondd.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }
         h1 {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             color: rgb(122, 197, 76) !important;
-            font-size: 16px;
+            font-size: 22px;
             font-weight: normal;
             margin-top: 0;
             margin-bottom: 40px;
             align-self: flex-start;
             padding-left: calc((100vw - 300px) / 2);
+            text-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
         }
         .content-wrapper {
             display: flex;
@@ -43,6 +49,7 @@
             max-width: 300px;
             height: auto;
             display: block;
+            filter: drop-shadow(0 0 10px white) drop-shadow(0 0 20px white);
         }
         .overlay {
             position: absolute;
@@ -54,15 +61,15 @@
         }
         .circle-triangle {
             position: relative;
-            width: 100%;
-            height: 100%;
             pointer-events: auto;
-            z-index: 1000;
+            z-index: 1001;
+            width: 60px;
+            height: 50px;
         }
         .small-circle {
             width: 15px;
             height: 15px;
-            background-color: transparent !important;
+            background-color: transparent;
             border-radius: 50%;
             position: absolute;
             border: 2px solid black;
@@ -70,9 +77,10 @@
             pointer-events: auto;
             transition: background-color 0.3s;
             z-index: 1001;
+            filter: drop-shadow(0 0 5px white) drop-shadow(0 0 10px white);
         }
         .small-circle.filled {
-            background-color: black !important;
+            background-color: black;
         }
         .circle1 {
             top: 0;
@@ -96,6 +104,7 @@
             font-size: 24px;
             opacity: 0;
             transition: opacity 0.3s;
+            text-shadow: 0 0 10px white, 0 0 20px white;
         }
         .text-box {
             border: 1px solid rgb(122, 197, 76);
@@ -104,6 +113,7 @@
             opacity: 0;
             transition: opacity 0.3s;
             max-width: 200px;
+            box-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
         }
         .image-container:hover ~ .arrow,
         .image-container:hover ~ .text-box,
@@ -111,15 +121,44 @@
         .image-with-scale:has(.image-container:hover) ~ .text-box {
             opacity: 1;
         }
-        .circle-triangle:hover ~ .arrow,
-        .circle-triangle:hover ~ .text-box {
+        .circle-triangle-wrapper {
+            position: absolute;
+            top: 10px;
+            left: -100px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+        }
+        .circle-text-box {
+            border: 1px solid rgb(122, 197, 76);
+            padding: 15px;
+            background-color: white;
             opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 200px;
+            position: absolute;
+            right: calc(100% + 40px);
+            white-space: nowrap;
+            box-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
+        }
+        .circle-arrow {
+            position: absolute;
+            right: calc(100% + 20px);
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            text-shadow: 0 0 10px white, 0 0 20px white;
+        }
+        .circle-triangle-wrapper:hover .circle-arrow,
+        .circle-triangle-wrapper:hover .circle-text-box {
+            opacity: 1;
         }
         .image-with-scale {
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             position: relative;
+            margin-left: 150px;
         }
         .number-scale {
             display: flex;
@@ -154,12 +193,14 @@
             border: 1px solid rgb(122, 197, 76);
             padding: 5px 10px;
             background-color: white;
+            box-shadow: 0 0 10px white, 0 0 20px white;
         }
         .arrow2 {
             margin: 0 20px;
             font-size: 24px;
             opacity: 0;
             transition: opacity 0.3s;
+            text-shadow: 0 0 10px white, 0 0 20px white;
         }
         .text-box2 {
             border: 1px solid rgb(122, 197, 76);
@@ -168,6 +209,7 @@
             opacity: 0;
             transition: opacity 0.3s;
             max-width: 200px;
+            box-shadow: 0 0 10px white, 0 0 20px white, 0 0 30px white;
         }
         #numberInput:hover ~ .arrow2,
         #numberInput:hover ~ .text-box2,
@@ -175,53 +217,132 @@
         #numberInput:focus ~ .text-box2 {
             opacity: 1;
         }
-        .arrow3 {
-            margin: 0 20px;
-            font-size: 24px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .text-box3 {
-            border: 1px solid rgb(122, 197, 76);
-            padding: 15px;
+        .screenshot-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 20px;
             background-color: white;
-            opacity: 0;
-            transition: opacity 0.3s;
-            max-width: 200px;
+            border: 2px solid rgb(122, 197, 76);
+            color: rgb(122, 197, 76);
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 9999;
+            box-shadow: 0 0 10px white, 0 0 20px white;
         }
-        .circle-triangle-wrapper:hover ~ .arrow3,
-        .circle-triangle-wrapper:hover ~ .text-box3 {
-            opacity: 1;
+        .screenshot-btn:hover {
+            background-color: rgb(122, 197, 76);
+            color: white;
         }
-        .circles-with-tooltip {
-            display: flex;
-            align-items: center;
-            position: relative;
-            margin-bottom: 10px;
-        }
-        .circle-triangle-wrapper {
-            position: relative;
-            width: 60px;
-            height: 50px;
+        
+        /* Media queries pour mobile */
+        @media (max-width: 768px) {
+            body {
+                padding-top: 10px;
+                padding-bottom: 80px;
+            }
+            
+            h1 {
+                font-size: 16px;
+                padding-left: 20px;
+                margin-bottom: 20px;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .content-wrapper {
+                flex-direction: column;
+                padding: 0 10px;
+            }
+            
+            .tooltip-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .image-with-scale {
+                margin-left: 0;
+                align-items: center;
+            }
+            
+            img {
+                max-width: 250px;
+            }
+            
+            .circle-triangle-wrapper {
+                position: static;
+                margin-bottom: 15px;
+                justify-content: center;
+            }
+            
+            .circle-text-box {
+                position: static;
+                margin-bottom: 10px;
+                opacity: 1;
+            }
+            
+            .circle-arrow {
+                position: static;
+                opacity: 1;
+                margin: 0 10px;
+            }
+            
+            .arrow {
+                display: none;
+            }
+            
+            .text-box {
+                position: static;
+                opacity: 1;
+                margin-top: 15px;
+                max-width: 90vw;
+            }
+            
+            .arrow2 {
+                display: none;
+            }
+            
+            .text-box2 {
+                position: static;
+                opacity: 1;
+                margin-top: 10px;
+                max-width: 90vw;
+            }
+            
+            .number-scale-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            #numberInput {
+                width: 200px;
+            }
+            
+            .screenshot-btn {
+                bottom: 10px;
+                right: 10px;
+                padding: 10px 15px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1> Ben's internal weather tool </h1>
+    <h1> Ben's internal weather </h1>
     <div class="content-wrapper">
         <div class="tooltip-container">
         <div class="image-with-scale">
-            <div class="circles-with-tooltip">
-                <div class="circle-triangle-wrapper">
-                    <div class="circle-triangle">
-                        <div class="small-circle circle1"></div>
-                        <div class="small-circle circle2"></div>
-                        <div class="small-circle circle3"></div>
-                    </div>
+            <div class="circle-triangle-wrapper">
+                <div class="circle-text-box">
+                    Ben's rain level
                 </div>
-                <div class="arrow3">→</div>
-                <div class="text-box3">
-                    Description des cercles
+                <div class="circle-arrow">→</div>
+                <div class="circle-triangle">
+                    <div class="small-circle circle1"></div>
+                    <div class="small-circle circle2"></div>
+                    <div class="small-circle circle3"></div>
                 </div>
             </div>
             <div class="image-container" onclick="addQuarter(event)">
@@ -247,17 +368,20 @@
                 </datalist>
                 <div class="arrow2">→</div>
                 <div class="text-box2">
-                   Ben's rise and drop pressure 
+                   Ben's rise or drop pressure 
                 </div>
             </div>
         </div>
         <div class="arrow">→</div>
         <div class="text-box">
-            Ben's cloudiness indicator
+            Ben's cloudiness
         </div>
         </div>
     </div>
-    
+
+    <button class="screenshot-btn" onclick="takeScreenshot()">settle yourself</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         let clickCount = 0;
         let selectedNumber = null;
@@ -283,15 +407,8 @@
                     e.stopPropagation();
                     e.preventDefault();
                     
-                    if (this.dataset.filled === 'false') {
-                        this.style.backgroundColor = 'black';
-                        this.dataset.filled = 'true';
-                        console.log('Circle', index + 1, 'FILLED with black');
-                    } else {
-                        this.style.backgroundColor = 'transparent';
-                        this.dataset.filled = 'false';
-                        console.log('Circle', index + 1, 'EMPTIED');
-                    }
+                    this.classList.toggle('filled');
+                    console.log('Circle', index + 1, 'toggled. Filled:', this.classList.contains('filled'));
                 });
                 
                 // Test si mousedown fonctionne
@@ -369,6 +486,38 @@
             path.setAttribute('fill', 'rgba(255, 255, 255, 0.7)');
             
             overlay.appendChild(path);
+        }
+        
+        function takeScreenshot() {
+            const button = document.querySelector('.screenshot-btn');
+            button.style.display = 'none'; // Cacher le bouton pour la capture
+            
+            // Afficher tous les text-boxes et flèches
+            const textBoxes = document.querySelectorAll('.text-box, .text-box2, .circle-text-box');
+            const arrows = document.querySelectorAll('.arrow, .arrow2, .circle-arrow');
+            
+            textBoxes.forEach(box => box.style.opacity = '1');
+            arrows.forEach(arrow => arrow.style.opacity = '1');
+            
+            // Attendre un peu pour que les changements soient appliqués
+            setTimeout(() => {
+                html2canvas(document.body, {
+                    backgroundColor: null,
+                    scale: 2,
+                    logging: false
+                }).then(canvas => {
+                    // Créer un lien de téléchargement
+                    const link = document.createElement('a');
+                    link.download = 'ben-weather-' + Date.now() + '.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                    
+                    // Réafficher le bouton et remettre les opacités à 0
+                    button.style.display = 'block';
+                    textBoxes.forEach(box => box.style.opacity = '0');
+                    arrows.forEach(arrow => arrow.style.opacity = '0');
+                });
+            }, 100);
         }
     </script>
 </body>
