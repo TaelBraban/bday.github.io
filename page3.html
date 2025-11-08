@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: rgb(122, 197, 76);
+            font-size: 14px;
+            padding-top: 20px;
+        }
+        h1 {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: rgb(122, 197, 76) !important;
+            font-size: 16px;
+            font-weight: normal;
+            margin-top: 0;
+            margin-bottom: 40px;
+            align-self: flex-start;
+            padding-left: calc((100vw - 300px) / 2);
+        }
+        .content-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+        .image-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }
+        img {
+            max-width: 300px;
+            height: auto;
+            display: block;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .circle-triangle {
+            position: absolute;
+            top: 20px;
+            left: -100px;
+            pointer-events: auto;
+            z-index: 1000;
+        }
+        .small-circle {
+            width: 15px;
+            height: 15px;
+            background-color: transparent !important;
+            border-radius: 50%;
+            position: absolute;
+            border: 2px solid black;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: background-color 0.3s;
+            z-index: 1001;
+        }
+        .small-circle.filled {
+            background-color: black !important;
+        }
+        .circle1 {
+            top: 0;
+            left: 20px;
+        }
+        .circle2 {
+            top: 25px;
+            left: 0;
+        }
+        .circle3 {
+            top: 25px;
+            left: 40px;
+        }
+        .tooltip-container {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+        }
+        .arrow {
+            margin: 0 20px;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .text-box {
+            border: 1px solid rgb(122, 197, 76);
+            padding: 15px;
+            background-color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 200px;
+        }
+        .image-container:hover ~ .arrow,
+        .image-container:hover ~ .text-box,
+        .image-with-scale:has(.image-container:hover) ~ .arrow,
+        .image-with-scale:has(.image-container:hover) ~ .text-box {
+            opacity: 1;
+        }
+        .circle-triangle:hover ~ .arrow,
+        .circle-triangle:hover ~ .text-box {
+            opacity: 0;
+        }
+        .image-with-scale {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            position: relative;
+        }
+        .number-scale {
+            display: flex;
+            gap: 5px;
+            margin-top: 10px;
+            margin-left: 0;
+        }
+        .number-item {
+            cursor: pointer;
+            padding: 5px 10px;
+            border: 1px solid rgb(122, 197, 76);
+            color: rgb(122, 197, 76);
+            background-color: white;
+            transition: all 0.3s;
+        }
+        .number-item:hover {
+            background-color: rgb(122, 197, 76);
+            color: white;
+        }
+        .number-item.selected {
+            background-color: rgb(122, 197, 76);
+            color: white;
+        }
+        .number-scale-container {
+            display: flex;
+            align-items: center;
+            margin-top: 10px;
+        }
+        #numberInput {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: rgb(122, 197, 76);
+            border: 1px solid rgb(122, 197, 76);
+            padding: 5px 10px;
+            background-color: white;
+        }
+        .arrow2 {
+            margin: 0 20px;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .text-box2 {
+            border: 1px solid rgb(122, 197, 76);
+            padding: 15px;
+            background-color: white;
+            opacity: 0;
+            transition: opacity 0.3s;
+            max-width: 200px;
+        }
+        #numberInput:hover ~ .arrow2,
+        #numberInput:hover ~ .text-box2,
+        #numberInput:focus ~ .arrow2,
+        #numberInput:focus ~ .text-box2 {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1> Ben's internal weather tool </h1>
+    <div class="content-wrapper">
+        <div class="tooltip-container">
+        <div class="image-with-scale">
+            <div class="circle-triangle">
+                <div class="small-circle circle1"></div>
+                <div class="small-circle circle2"></div>
+                <div class="small-circle circle3"></div>
+            </div>
+            <div class="image-container" onclick="addQuarter(event)">
+                <img src="ben.png" alt="Ben" id="benImage">
+                <svg class="overlay" id="overlay" viewBox="0 0 100 100">
+                    <!-- Les quarts seront ajoutés ici -->
+                </svg>
+            </div>
+            <div class="number-scale-container">
+                <input type="text" id="numberInput" list="numberList" placeholder="pressure rate" />
+                <datalist id="numberList">
+                    <option value="-5"></option>
+                    <option value="-4"></option>
+                    <option value="-3"></option>
+                    <option value="-2"></option>
+                    <option value="-1"></option>
+                    <option value="0"></option>
+                    <option value="1"></option>
+                    <option value="2"></option>
+                    <option value="3"></option>
+                    <option value="4"></option>
+                    <option value="5"></option>
+                </datalist>
+                <div class="arrow2">→</div>
+                <div class="text-box2">
+                   Ben's rise and drop pressure 
+                </div>
+            </div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="text-box">
+            Ben's cloudiness indicator
+        </div>
+        </div>
+    </div>
+    
+    <script>
+        let clickCount = 0;
+        let selectedNumber = null;
+        
+        // Initialiser les cercles après le chargement de la page
+        window.addEventListener('load', function() {
+            console.log('Page loaded, looking for circles...');
+            const circles = document.querySelectorAll('.small-circle');
+            console.log('Found circles:', circles.length);
+            
+            if (circles.length === 0) {
+                console.error('No circles found!');
+                return;
+            }
+            
+            circles.forEach((circle, index) => {
+                console.log('Setting up circle', index + 1);
+                circle.dataset.filled = 'false';
+                circle.style.border = '2px solid black';
+                
+                circle.addEventListener('click', function(e) {
+                    console.log('CLICK DETECTED on circle', index + 1);
+                    e.stopPropagation();
+                    e.preventDefault();
+                    
+                    if (this.dataset.filled === 'false') {
+                        this.style.backgroundColor = 'black';
+                        this.dataset.filled = 'true';
+                        console.log('Circle', index + 1, 'FILLED with black');
+                    } else {
+                        this.style.backgroundColor = 'transparent';
+                        this.dataset.filled = 'false';
+                        console.log('Circle', index + 1, 'EMPTIED');
+                    }
+                });
+                
+                // Test si mousedown fonctionne
+                circle.addEventListener('mousedown', function(e) {
+                    console.log('MOUSEDOWN on circle', index + 1);
+                });
+            });
+            console.log('All circles initialized successfully');
+        });
+        
+        function toggleCircle(evt, circleNum) {
+            if (evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+            }
+            console.log('Toggle circle', circleNum);
+            const circle = evt.target;
+            circle.classList.toggle('filled');
+            console.log('Circle classes:', circle.className);
+        }
+        
+        function selectNumber(num, evt) {
+            if (evt) {
+                evt.stopPropagation(); // Empêcher la propagation du clic
+            }
+            
+            // Retirer la sélection précédente
+            const allNumbers = document.querySelectorAll('.number-item');
+            allNumbers.forEach(item => item.classList.remove('selected'));
+            
+            // Ajouter la sélection au numéro cliqué
+            if (evt && evt.target) {
+                evt.target.classList.add('selected');
+            }
+            selectedNumber = num;
+            console.log('Nombre sélectionné:', num);
+        }
+        
+        function addQuarter(evt) {
+            if (evt) {
+                evt.stopPropagation();
+            }
+            const overlay = document.getElementById('overlay');
+            
+            if (clickCount >= 4) {
+                // Réinitialiser l'image
+                clickCount = 0;
+                overlay.innerHTML = '';
+                return;
+            }
+            
+            clickCount++;
+            const startAngle = (clickCount - 1) * 90;
+            const endAngle = clickCount * 90;
+            
+            // Créer un quart de cercle
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            const centerX = 50;
+            const centerY = 50;
+            const radius = 50;
+            
+            const startRad = (startAngle - 90) * Math.PI / 180;
+            const endRad = (endAngle - 90) * Math.PI / 180;
+            
+            const x1 = centerX + radius * Math.cos(startRad);
+            const y1 = centerY + radius * Math.sin(startRad);
+            const x2 = centerX + radius * Math.cos(endRad);
+            const y2 = centerY + radius * Math.sin(endRad);
+            
+            const largeArc = 0;
+            
+            const d = `M ${centerX} ${centerY} L ${x1} ${y1} A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2} Z`;
+            
+            path.setAttribute('d', d);
+            path.setAttribute('fill', 'rgba(255, 255, 255, 0.7)');
+            
+            overlay.appendChild(path);
+        }
+    </script>
+</body>
+</html>
